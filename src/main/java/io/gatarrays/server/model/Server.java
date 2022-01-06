@@ -20,7 +20,7 @@ public class Server {
     @GeneratedValue(strategy = AUTO)
     private Long id;
     @Column(unique = true)
-    @NotEmpty(message = "ip Address cannot be empty or null")
+    @NotEmpty(message = "IP Address cannot be empty or null")
     private String ipAddress;
     private String name;
     private String memory;
