@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -87,7 +88,8 @@ public class ServerResource {
     }
 
     @GetMapping(path = "/image/{fileName}",produces = IMAGE_PNG_VALUE)
-    public byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException {
-        return Files.readAllBytes(Paths.get(System.getProperty("user.home")+"Download/images/"+fileName));
+    public byte[] getServerImage(@PathVariable("fileName") String fileName) throws IOException, URISyntaxException {
+//        return Files.readAllBytes(Paths.get(System.getProperty("user.home")+"Download/images/"+fileName));
+        return Files.readAllBytes(Paths.get(ServerResource.class.getClassLoader().getResource("static/images/servers/"+fileName).toURI()));
     }
 }
