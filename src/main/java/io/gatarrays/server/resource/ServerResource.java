@@ -16,6 +16,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static io.gatarrays.server.enumeration.Status.SERVER_UP;
 import static java.time.LocalDateTime.now;
@@ -31,7 +32,9 @@ public class ServerResource {
     private final ServerServiceImpl serverService;
 
     @GetMapping("/list")
-    public ResponseEntity<Response> getServers() {
+    public ResponseEntity<Response> getServers() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(2);
+//        throw new RuntimeException("Something went wrong");
         return ResponseEntity.ok(Response.builder()
                 .localDateTime(now())
                 .data(of("servers", serverService.list(30)))

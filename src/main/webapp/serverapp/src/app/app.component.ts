@@ -16,7 +16,8 @@ export class AppComponent implements OnInit {
   appState$!: Observable<AppState<CustomResponse>>;
   readonly DataState = DataState;
   readonly Status = Status;
-  private filterSubject = new BehaviorSubject<string>(''),
+  private filterSubject = new BehaviorSubject<string>('');
+  filterStatus$ = this.filterSubject.asObservable();
   constructor(private serverService: ServerService) {
   }
 
