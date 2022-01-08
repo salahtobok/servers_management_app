@@ -26,18 +26,18 @@ import static java.lang.Boolean.TRUE;
 @Slf4j
 public class ServerServiceImpl implements ServerService {
     private final ServerRepo serverRepo;
+
     @Override
     public Server create(Server server) {
-        log.info("Saving new server : {}",server.getName());
+        log.info("Saving new server : {}", server.getName());
         server.setImageUrl(setServerImageUrl());
         return serverRepo.save(server);
     }
 
 
-
     @Override
     public Server ping(String ipAddress) throws IOException {
-        log.info("Pinging server IP : {}",ipAddress);
+        log.info("Pinging server IP : {}", ipAddress);
         Server server = serverRepo.findByIpAddress(ipAddress);
         InetAddress address = InetAddress.getByName(ipAddress);
         server.setStatus(address.isReachable(10000) ? SERVER_UP : SERVER_DOWN);
@@ -48,30 +48,30 @@ public class ServerServiceImpl implements ServerService {
     @Override
     public Collection<Server> list(int limit) {
         log.info("Fetching all servers");
-        return serverRepo.findAll(PageRequest.of(0,limit)).toList();
+        return serverRepo.findAll(PageRequest.of(0, limit)).toList();
     }
 
     @Override
     public Server get(Long id) {
-        log.info("Fetching server by id: {}",id);
+        log.info("Fetching server by id: {}", id);
         return serverRepo.findById(id).get();
     }
 
     @Override
     public Server update(Server server) {
-        log.info("Updating server: {}",server.getName());
+        log.info("Updating server: {}", server.getName());
         return serverRepo.save(server);
     }
 
     @Override
     public Boolean delete(Long id) {
-        log.info("Deleting server by : {}",id);
+        log.info("Deleting server by : {}", id);
         serverRepo.deleteById(id);
         return TRUE;
     }
 
-    private String setServerImageUrl(){
-        String[] imageNames = {"server1.png","server2.png","server3.png","server4.png"};
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path("/server/image/"+imageNames[new Random().nextInt(4)]).toUriString();
+    private String setServerImageUrl() {
+        String[] imageNames = {"server1.png", "server2.png", "server3.png", "server4.png"};
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path("/server/image/" + imageNames[new Random().nextInt(4)]).toUriString();
     }
 }

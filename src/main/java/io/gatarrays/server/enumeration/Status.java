@@ -12,7 +12,7 @@ public enum Status {
     }
 
 
-    public String getStatus(){
+    public String getStatus() {
         return this.status;
     }
 
