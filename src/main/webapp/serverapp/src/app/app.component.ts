@@ -12,9 +12,11 @@ import {catchError} from "rxjs/operators";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  // appState$ : Observable<AppState<CustomResponse>>;
-  constructor(private serverService: ServerService, private appState$: Observable<AppState<CustomResponse>>) {
+  appState$!: Observable<AppState<CustomResponse>>;
+
+  constructor(private serverService: ServerService) {
   }
+
 
   ngOnInit(): void {
     this.appState$ = this.serverService.servers$.pipe(
