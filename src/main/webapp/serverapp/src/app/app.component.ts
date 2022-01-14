@@ -19,6 +19,7 @@ export class AppComponent implements OnInit {
   private filterSubject = new BehaviorSubject<string>('');
   // @ts-ignore
   private dataSubject = new BehaviorSubject<CustomResponse>(null);
+
   filterStatus$ = this.filterSubject.asObservable();
 
   constructor(private serverService: ServerService) {
@@ -61,8 +62,9 @@ export class AppComponent implements OnInit {
       )
   }
 
-  filterServers(status: Status): void {
-    this.appState$ = this.serverService.filter$(status,this.dataSubject.value)
+  filterServers(event: Event): void {
+    console.log("*****************");
+    this.appState$ = this.serverService.filter$(Status.SERVER_UP, this.dataSubject.value)
       .pipe(
         map(response => {
             return {dataState: DataState.LOADED_STATE, appData: response}
