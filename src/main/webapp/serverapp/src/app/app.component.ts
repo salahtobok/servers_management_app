@@ -22,6 +22,8 @@ export class AppComponent implements OnInit {
 
   filterStatus$ = this.filterSubject.asObservable();
 
+  filter_criteria = "ALL";
+
   constructor(private serverService: ServerService) {
   }
 
@@ -62,9 +64,9 @@ export class AppComponent implements OnInit {
       )
   }
 
-  filterServers(event: Event): void {
+  filterServers(status: Status): void {
     console.log("*****************");
-    this.appState$ = this.serverService.filter$(Status.SERVER_UP, this.dataSubject.value)
+    this.appState$ = this.serverService.filter$(status, this.dataSubject.value)
       .pipe(
         map(response => {
             return {dataState: DataState.LOADED_STATE, appData: response}
