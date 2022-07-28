@@ -6,6 +6,8 @@ import {CustomResponse} from "./interface/custom-response";
 import {DataState} from "./emun/data-state.enum";
 import {catchError} from "rxjs/operators";
 import {Status} from "./emun/status.enum";
+import {NgForm} from "@angular/forms";
+import {Server} from "./interface/server";
 
 @Component({
   selector: 'app-root',
@@ -23,6 +25,9 @@ export class AppComponent implements OnInit {
   filterStatus$ = this.filterSubject.asObservable();
 
   filter_criteria = "ALL";
+
+  private isLoading = new BehaviorSubject<boolean>(false);
+  isLoading$ = this.isLoading.asObservable();
 
   constructor(private serverService: ServerService) {
   }
@@ -59,6 +64,30 @@ export class AppComponent implements OnInit {
         ),
         startWith({dataState: DataState.LOADED_STATE, appData: this.dataSubject.value}),
         catchError((error: string) => {
+          return of({dataState: DataState.ERROR_STATE, error})
+        })
+      )
+  }
+
+  saveServer(serverForm: NgForm): void {
+    this.isLoading.next(true)
+    this.appState$ = this.serverService.save$(serverForm.value as Server)
+      .pipe(
+        map(response => {
+          this.dataSubject.next(
+            {...response, data:{servers:[response.data.server!,...this.dataSubject.value.data.servers]}}
+          )
+          // @ts-ignore
+          document.getElementById('closeModal').click();
+          serverForm.resetForm({status:this.Status.SERVER_DOWN});
+          this.isLoading.next(false)
+
+          return {dataState: DataState.LOADED_STATE, appData: this.dataSubject.value}
+          }
+        ),
+        startWith({dataState: DataState.LOADED_STATE, appData: this.dataSubject.value}),
+        catchError((error: string) => {
+          this.isLoading.next(false)
           return of({dataState: DataState.ERROR_STATE, error})
         })
       )
