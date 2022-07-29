@@ -57,7 +57,7 @@ public class ServerResource {
     }
 
 
-    @GetMapping("/save")
+    @PostMapping("/save")
     public ResponseEntity<Response> saveServer(@RequestBody @Valid Server server) {
         return ResponseEntity.ok(Response.builder()
                 .localDateTime(now())
@@ -79,7 +79,7 @@ public class ServerResource {
                 .build());
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Response> deleteServer(@PathVariable("id") Long id) {
         return ResponseEntity.ok(Response.builder()
                 .localDateTime(now())
